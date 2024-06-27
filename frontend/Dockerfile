@@ -6,6 +6,8 @@ WORKDIR /app
 # Copy package.json and package-lock.json to the container
 COPY package*.json ./
 
+RUN chmod -R ugo+rw /app/
+
 # Install dependencies
 RUN npm install
 
