@@ -3,10 +3,10 @@ FROM registry.access.redhat.com/ubi8/nodejs-18:1-110.1719303984 AS build
 
 WORKDIR /app
 
-RUN chmod -R ugo+rw /app/
+
 # Copy package.json and package-lock.json to the container
 COPY package*.json ./
-
+USER 0
 RUN chmod -R ugo+rw /app/
 
 # Install dependencies
@@ -17,6 +17,7 @@ COPY . .
 
 # Build the React app
 RUN npm run build
+USER 1001
 
 # Serve stage
 FROM registry.access.redhat.com/ubi8/nginx-124:1-12.1717586547
