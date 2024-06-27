@@ -3,6 +3,7 @@ FROM registry.access.redhat.com/ubi8/nodejs-18:1-110.1719303984 AS build
 
 WORKDIR /app
 
+RUN chmod -R ugo+rw /app/
 # Copy package.json and package-lock.json to the container
 COPY package*.json ./
 
