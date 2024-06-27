@@ -1,5 +1,5 @@
 # Build stage
-FROM node:18 AS build
+FROM registry.access.redhat.com/ubi8/nodejs-18:1-110.1719303984 AS build
 
 WORKDIR /app
 
@@ -16,16 +16,14 @@ COPY . .
 RUN npm run build
 
 # Serve stage
-FROM nginx:1.25.1
+FROM registry.access.redhat.com/ubi8/nginx-124:1-12.1717586547
 
-# Copy the custom nginx.conf file to the container
-COPY .docker/nginx.conf /etc/nginx/nginx.conf
 
 # Copy the built React app from the build stage to the nginx container
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/build /opt/app-root/src
 
 # Expose port 80
-EXPOSE 80
+EXPOSE 8080
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
